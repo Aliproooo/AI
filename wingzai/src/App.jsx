@@ -20,6 +20,8 @@ export default function App() {
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -28,9 +30,23 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handleNotifyMe = () => {
+    if (email && email.includes("@")) {
+      console.log("Email captured:", email);
+      setMessage("Thank you! We will notify you.");
+      setEmail("");
+    } else {
+      setMessage("Please enter a valid email address.");
+    }
+  };
+
   return (
     <div className="container">
-      <h1 className="title">WingZai</h1>
+      <h1 className="title">WingZai <span>By Alipro</span></h1>
       <h2 className="subtitle">Revolutionizing the Future</h2>
       <p className="description">
         Get ready to experience the next-gen SaaS platform. We are building something game-changing.
@@ -50,9 +66,16 @@ export default function App() {
         </div>
       </div>
       <div className="email-box">
-        <input type="email" placeholder="Enter your email" className="email-input" />
-        <button className="notify-button">Notify Me</button>
+        <input 
+          type="email" 
+          placeholder="Enter your email" 
+          className="email-input" 
+          value={email} 
+          onChange={handleEmailChange} 
+        />
+        <button className="notify-button" onClick={handleNotifyMe}>Notify Me</button>
       </div>
+      {message && <p className="message">{message}</p>}
     </div>
   );
 }
